@@ -2,7 +2,7 @@ import datetime
 import RPi.GPIO as GPIO
 import json
 
-class lane:
+class Stopwatch:
     def __init__(self):
         self.start_time = datetime.datetime.now()
         self.stop_time = datetime.datetime.now()

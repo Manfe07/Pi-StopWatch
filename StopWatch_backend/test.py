@@ -1,9 +1,9 @@
 from flask import Flask
-import datetime, commands, stopwatch, test_stuf
+from stopwatch import stopwatch
+import datetime, commands, test_stuf
 app = Flask(__name__)
 
-l1 = stopwatch.lane()
-input.init()
+stopwatch = stopwatch()
 
 @app.route("/ip")
 def index():
