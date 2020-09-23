@@ -1,5 +1,5 @@
 from flask import Flask
-import datetime, stopwatch, test_stuf, commands
+import datetime, commands, stopwatch, test_stuf, input
 app = Flask(__name__)
 
 l1 = stopwatch.lane()
@@ -21,6 +21,10 @@ def stop():
 @app.route("/runtime")
 def runtime():
     return test_stuf.refreshcode(1) + str(l1.get_runtime())
+
+@app.route("/input")
+def input():
+    return test_stuf.refreshcode(1) + input.get_input
 
 @app.route("/refresh")
 def refresh():

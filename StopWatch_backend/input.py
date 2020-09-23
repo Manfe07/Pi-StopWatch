@@ -13,8 +13,7 @@ GPIO.setup(button_3, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 input = {"Button_1": False, "Button_2": False, "Button_3": False}
 
-
-while(1):
+def get_input():
     if GPIO.input(button_1) == 0:
         input["Button_1"] = True
     else:
@@ -30,4 +29,4 @@ while(1):
     else:
         input["Button_3"] = False
 
-    print json.dump(input)
+    return json.dumps(input)
