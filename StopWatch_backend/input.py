@@ -30,3 +30,6 @@ def get_input():
         input["Button_3"] = False
 
     return json.dumps(input)
+
+while(1):
+    print get_input()

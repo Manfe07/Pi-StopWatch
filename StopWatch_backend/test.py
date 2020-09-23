@@ -24,7 +24,7 @@ def runtime():
 
 @app.route("/input")
 def input():
-    return test_stuf.refreshcode(1) + input.get_input
+    return test_stuf.refreshcode(1) + input.get_input()
 
 @app.route("/refresh")
 def refresh():
