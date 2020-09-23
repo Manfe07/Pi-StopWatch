@@ -11,21 +11,21 @@ def index():
 
 @app.route("/start")
 def start():
-    time = l1.start()
+    time = stopwatch.start()
     return "StartTime: " + str(time)
 
 @app.route("/stop")
 def stop():
-    l1.stop()
-    return "<br>StartTime: " + str(l1.start_time) + "<br>StopTime: " + str(l1.stop_time) + "<br>Duration: " + str(l1.get_duration())
+    stopwatch.stop()
+    return "<br>StartTime: " + str(stopwatch.start_time) + "<br>StopTime: " + str(stopwatch.stop_time) + "<br>Duration: " + str(stopwatch.get_duration())
 
 @app.route("/runtime")
 def runtime():
-    return test_stuf.refreshcode(1) + str(l1.get_runtime())
+    return test_stuf.refreshcode(1) + str(stopwatch.get_runtime())
 
 @app.route("/")
 def input():
-    return test_stuf.refreshcode(1) + str(l1.get_input())
+    return test_stuf.refreshcode(1) + str(stopwatch.get_input())
 
 @app.route("/refresh")
 def refresh():
