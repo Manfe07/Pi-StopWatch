@@ -1,12 +1,12 @@
 from flask import Flask
-import datetime, stopwatch, test_stuf
+import datetime, stopwatch, test_stuf, commands
 app = Flask(__name__)
 
 l1 = stopwatch.lane()
 
 @app.route("/")
 def index():
-    return str(datetime.datetime.now())
+    return "IP: " + str(commands.getoutput('hostname -I'))
 
 @app.route("/start")
 def start():
