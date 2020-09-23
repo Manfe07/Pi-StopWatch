@@ -9,18 +9,30 @@ class Stopwatch:
         self.button_1 = button(40)
         self.button_2 = button(38)
         self.button_3 = button(36)
+        self.running = False
 
     def start(self):
-        self.start_time = datetime.datetime.now()
-        return self.start_time
+        if(self.running == False):
+            self.running = True
+            self.start_time = datetime.datetime.now()
+            return self.start_time
+        else:
+            return -1
 
     def stop(self):
-        self.stop_time = datetime.datetime.now()
-        return self.stop_time
+        if (self.running == True):
+            self.running = False
+            self.stop_time = datetime.datetime.now()
+            return self.stop_time
+        else:
+            return -1
 
     def get_duration(self):
-        duration = self.stop_time - self.start_time
-        return duration
+        if(self.running == False):
+            duration = self.stop_time - self.start_time
+            return duration
+        else:
+            return -1
 
     def get_runtime(self):
         runtime = datetime.datetime.now() - self.start_time
