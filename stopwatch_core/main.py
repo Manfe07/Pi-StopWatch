@@ -20,15 +20,16 @@ while(1):
     input = stopwatch.get_input()
     if(old_input != input):
         old_input = input
-        client.publish("stopwatch/button", str(input))
+        client.publish("stopwatch/button", json.dumps(input),retain=True)
         if(input["Button_1"] == True):
             if(stopwatch.running == False):
                 stopwatch.start()
+                client.publish("stopwatch/start_time", str(stopwatch.start_time),retain=True)
                 time.sleep(0.5)
             else:
                 stopwatch.stop()
-                client.publish("stopwatch/duration", str(stopwatch.get_duration()))
+                client.publish("stopwatch/duration", str(stopwatch.get_duration()),retain=True)
                 time.sleep(0.5)
-            client.publish("stopwatch/running", str(stopwatch.running))
+            client.publish("stopwatch/running", str(stopwatch.running),retain=True)
     if(stopwatch.running):
-        client.publish("stopwatch/duration", str(stopwatch.get_runtime()))
+        client.publish("stopwatch/duration", str(stopwatch.get_runtime()),retain=True)
