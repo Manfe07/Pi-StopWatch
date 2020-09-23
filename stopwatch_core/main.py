@@ -21,14 +21,14 @@ while(1):
     if(old_input != input):
         old_input = input
         client.publish("stopwatch/button", str(input))
-        time.sleep(0.5)
         if(input["Button_1"] == True):
             if(stopwatch.running == False):
                 stopwatch.start()
+                time.sleep(0.5)
             else:
                 stopwatch.stop()
                 client.publish("stopwatch/duration", str(stopwatch.get_duration()))
-
+                time.sleep(0.5)
             client.publish("stopwatch/running", str(stopwatch.running))
     if(stopwatch.running):
         client.publish("stopwatch/duration", str(stopwatch.get_runtime()))

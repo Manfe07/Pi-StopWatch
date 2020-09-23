@@ -1,16 +1,17 @@
-# This is a sample Python script.
+import commands
+from flask import Flask, render_template
+import paho.mqtt.subscribe as subscribe
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = Flask(__name__)
 
+ip = commands.getoutput('hostname -I')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+@app.route("/")
+def index():
+    start_time = subscribe.simple("stopwatch/start_time", hostname="127.0.0.1")
+    runtime = subscribe.simple("stopwatch/runtime", hostname="127.0.0.1")
+    duration = subscribe.simple("stopwatch/duration", hostname="127.0.0.1")
+    return render_template("index.html", adress=ip, start_time=start_time.payload, runtime=runtime.payload, duration=duration.payload )
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    app.run(port=1337,debug=True)
