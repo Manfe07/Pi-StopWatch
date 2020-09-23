@@ -1,6 +1,7 @@
 import datetime
 import RPi.GPIO as GPIO
-import json
+import json, os, time
+from threading import Thread
 
 class Stopwatch:
     def __init__(self):
@@ -9,6 +10,9 @@ class Stopwatch:
         self.button_1 = button(40)
         self.button_2 = button(38)
         self.button_3 = button(36)
+        self.input = {"Button_1": False, "Button_2": False, "Button_3": False}
+        thread = Thread(target= self.checkInput)
+        thread.start()
 
     def start(self):
         self.start_time = datetime.datetime.now()
@@ -27,11 +31,16 @@ class Stopwatch:
         return runtime
 
     def get_input(self):
-        input = {"Button_1": False, "Button_2": False, "Button_3": False}
-        input["Button_1"] = self.button_1.get_state()
-        input["Button_2"] = self.button_2.get_state()
-        input["Button_3"] = self.button_3.get_state()
         return json.dumps(input)
+
+    def check_input(self):
+        while(1)
+            self.input["Button_1"] = self.button_1.get_state()
+            self.input["Button_2"] = self.button_2.get_state()
+            self.input["Button_3"] = self.button_3.get_state()
+            time.sleep(.01)
+            print "working"
+            return 1
 
 class button:
     def __init__(self, _pin):
