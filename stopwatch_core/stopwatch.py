@@ -43,7 +43,7 @@ class Stopwatch:
         input["Button_1"] = self.button_1.get_state()
         input["Button_2"] = self.button_2.get_state()
         input["Button_3"] = self.button_3.get_state()
-        return json.dumps(input)
+        return input
 
 class button:
     def __init__(self, _pin):

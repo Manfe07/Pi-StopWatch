@@ -1,4 +1,4 @@
-import time
+import time, json
 import paho.mqtt.client as mqtt
 import stopwatch
 
@@ -20,12 +20,15 @@ while(1):
     input = stopwatch.get_input()
     if(old_input != input):
         old_input = input
-        client.publish("stopwatch/button", input)
+        client.publish("stopwatch/button", str(input))
         time.sleep(0.5)
-        if((input["Button_1"] == True) or (input["Button_2"] == True) or (input["Button_3"] == True)):
+        if(input["Button_1"] == True):
             if(stopwatch.running == False):
                 stopwatch.start()
             else:
                 stopwatch.stop()
+                client.publish("stopwatch/duration", str(stopwatch.get_duration()))
 
-    client.publish("stopwatch/duration", stopwatch.get_duration())
+            client.publish("stopwatch/running", str(stopwatch.running))
+    if(stopwatch.running):
+        client.publish("stopwatch/duration", str(stopwatch.get_runtime()))
