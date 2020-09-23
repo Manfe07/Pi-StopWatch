@@ -1,5 +1,6 @@
 from time import sleep
 import RPi.GPIO as GPIO
+import json
 
 GPIO.setmode(GPIO.BOARD)
 button_1 = 40
@@ -10,13 +11,23 @@ GPIO.setup(button_1, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(button_2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(button_3, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
+input = {"Button_1": False, "Button_2": False, "Button_3": False}
+
+
 while(1):
     if GPIO.input(button_1) == 0:
-        print "Button 1"
-        sleep(.1)
+        input["Button_1"] = True
+    else:
+        input["Button_1"] = False
+
     if GPIO.input(button_2) == 0:
-        print "Button 2"
-        sleep(.1)
+        input["Button_2"] = True
+    else:
+        input["Button_2"] = False
+
     if GPIO.input(button_3) == 0:
-        print "Button 3"
-        sleep(.1)
+        input["Button_3"] = True
+    else:
+        input["Button_3"] = False
+
+    print json.dump(input)
