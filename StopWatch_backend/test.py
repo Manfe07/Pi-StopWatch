@@ -1,10 +1,11 @@
 from flask import Flask
-import datetime, commands, stopwatch, test_stuf, input
+import datetime, commands, stopwatch, test_stuf
 app = Flask(__name__)
 
 l1 = stopwatch.lane()
+input.init()
 
-@app.route("/")
+@app.route("/ip")
 def index():
     return "IP: " + str(commands.getoutput('hostname -I'))
 
@@ -22,9 +23,9 @@ def stop():
 def runtime():
     return test_stuf.refreshcode(1) + str(l1.get_runtime())
 
-@app.route("/input")
+@app.route("/")
 def input():
-    return test_stuf.refreshcode(1) + input.get_input()
+    return test_stuf.refreshcode(1) + str(l1.get_input())
 
 @app.route("/refresh")
 def refresh():
