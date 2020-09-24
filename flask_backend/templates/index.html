@@ -7,15 +7,18 @@
 		<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
 		<script>var __adobewebfontsappname__="dreamweaver"</script>   
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script src="http://use.edgefonts.net/allerta:n4:default;carme:n4:default.js" type="text/javascript"></script>
+		<!--<script src="http://use.edgefonts.net/allerta:n4:default;carme:n4:default.js" type="text/javascript"></script>-->
 	</head>
     <body id="mainpage">
 		<h1 align="center">Stopwatch</h1>
 		<div class="container" align="center">
 			<p>
-			Startzeit: <a id="start_time">00:00:00:00:00</a><br>
-			Laufzeit: <a id="runtime_time">00:00:00:00:00</a><br>
-			Dauer: <a id="duration">00:00:00:00:00</a></p><br>
+				Startzeit: <a id="start_time">00:00:00:00:00</a><br>
+				Bahn_1: <a id="lane_1">00:00:00:00:00</a><br>
+				Bahn_2: <a id="lane_2">00:00:00:00:00</a><br>
+				Bahn_3: <a id="lane_3">00:00:00:00:00</a><br>
+				Laufzeit: <a id="runtime_time">00:00:00:00:00</a>
+			</p>
 		</div>	
 		<div class="container" align="center">
 			<p>
@@ -29,7 +32,7 @@
 	<script>
 		function refresh_duration(){
 			$.getJSON('http://time.jsontest.com', function(data) {
-				document.getElementById("duration").innerHTML = data.time;
+				document.getElementById("lane_1").innerHTML = data.time;
 				});
 			return 0
 		}
@@ -53,6 +56,6 @@
 		}
 		setInterval(refresh_duration,1000);
 		setInterval(refresh_IO,1000);
-		setInterval(get_IP,1100)
+		setInterval(get_IP,10000)
 	</script>		
 </html>

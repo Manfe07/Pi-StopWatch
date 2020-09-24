@@ -1,4 +1,4 @@
-#import commands
+import commands
 import json, random
 
 from flask import Flask, render_template
@@ -6,7 +6,6 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-#ip = commands.getoutput('hostname -I')
 
 @app.route("/")
 def index():
@@ -27,8 +26,9 @@ def data():
 
 @app.route("/get_ip")
 def get_ip():
-    data = {"ip": "192.168.0.1"}
-    data["ip"] = str(random.randrange(0,255,1)) + "." + str(random.randrange(0,255,1)) + "." + str(random.randrange(0,255,1)) + "." + str(random.randrange(0,255,1))
+    ip = commands.getoutput('hostname -I')
+    data = {"ip": str(ip)}
     return json.dumps(data)
+
 if __name__ == '__main__':
     app.run(port=1337,debug=True)
