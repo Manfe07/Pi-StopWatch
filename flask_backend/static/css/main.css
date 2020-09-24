@@ -1,0 +1,16 @@
+/* CSS Document */
+
+#mainpage {
+    background-color: rgba(174,174,255,1.00);
+    font-family: Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+    font-weight: 400;
+    font-style: normal;
+	
+}
+
+#ip_adress {
+    font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+}
+.container {
+	margin: 4%;
+}
