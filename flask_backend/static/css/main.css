@@ -7,9 +7,6 @@
     font-style: normal;
 	
 }
-#mainpage {
-}
-
 
 #ip_adress {
     font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
@@ -25,5 +22,5 @@
 }
 
 .runtime {
-	font-size: 30
+    font-size: 75px
 }
