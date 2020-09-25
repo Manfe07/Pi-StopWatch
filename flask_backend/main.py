@@ -1,8 +1,8 @@
 import commands
-import json, random
+import json, random, datetime
 
 from flask_mqtt import Mqtt
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 app.config['MQTT_BROKER_URL'] = '127.0.0.1'
@@ -19,10 +19,11 @@ ip = "131.123.123.123"
 stuff = {
     "start_time": "",
     "runtime": "000.00",
+    "time_1": "000.00",
     "running": False,
-    "Button_1": False,
-    "Button_2": False,
-    "Button_3": False,
+    "button_1": False,
+    "button_2": False,
+    "button_3": False,
 }
 
 @mqtt.on_connect()
@@ -38,16 +39,21 @@ def handle_mqtt_message(client, userdata, message):
     )
     if(data["topic"] == "stopwatch/running"):
         if(data["payload"] == "True"):
-            stuff["running"] = True;
+            stuff["running"] = True
         else:
-            stuff["running"] = False;
-    elif(data["topic"] == "stopwatch/duration"):
-        stuff["runtime"] = data["payload"]
+            stuff["running"] = False
+    elif(data["topic"] == "stopwatch/runtime"):
+        stuff["runtime"] = data['payload']
+        print(data['payload'])
     elif(data["topic"] == "stopwatch/start_time"):
         stuff["start_time"] = data["payload"]
-        print("startTime")
-
-
+    elif(data["topic"] == "stopwatch/time_1"):
+        stuff["time_1"] = data['payload']
+    elif(data["topic"] == "stopwatch/button"):
+        buttons = json.loads(data['payload'])
+        stuff["button_1"] = bool(buttons["Button_1"])
+        stuff["button_1"] = bool(buttons["Button_2"])
+        stuff["button_1"] = bool(buttons["Button_3"])
 
 @app.route("/")
 def index():
@@ -56,7 +62,6 @@ def index():
 @app.route("/data")
 def data():
     global stuff
-    stuff["Button_1"] = bool(random.getrandbits(1))
     stuff["Button_2"] = bool(random.getrandbits(1))
     stuff["Button_3"] = bool(random.getrandbits(1))
     return json.dumps(stuff)
