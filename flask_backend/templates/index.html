@@ -13,17 +13,18 @@
 		<h1 align="center">Stopwatch</h1>
 		<div class="container" align="center" id="timetable_container">
 			<p>
-				<img src="../img/raceflags.png" width="20%"><br>
+				<img src="../static/raceflags.png" width="20%"><br>
 				Startzeit: <a id="start_time">00:00:00:00:00</a><br>
 				Bahn_1: <a id="lane_1">000.00</a><br>
 				Bahn_2: <a id="lane_2">000.00</a><br>
 				Bahn_3: <a id="lane_3">000.00</a><br>
 			</p>
 		</div>	
-		<div class="container" align="center" id="runtime_container" hidden="true">
+		<div class="container" align="center" id="runtime_container">
+			<img src="../static/cupHead.gif" height="30%"><br>
 			<a class="runtime" id="runtime_time">000.00</a>
 		</div>
-		<div class="container" align="center">
+		<div class="container" id="misc_container" align="center">
 			<p>
 				<a class="button_indicator" id="button_1">Button 1</a>
 				<a class="button_indicator" id="button_2">Button 2</a>
@@ -33,23 +34,34 @@
 		</div>
 		</body>
 	<script>
-		function refresh_duration(){
-			$.getJSON('http://time.jsontest.com', function(data) {
-				document.getElementById("lane_1").innerHTML = data.time;
-				});
-			return 0
-		}
 		function get_IP(){
-			$.getJSON('http://127.0.0.1:1337/get_ip', function(data) {
+			$.getJSON('http://localhost:1337/get_ip', function(data) {
 				document.getElementById("ip_adress").innerHTML = data.ip;
 				});
 			return 0
 		}
 		function refresh_IO(){
-			$.getJSON('http://127.0.0.1:1337/data', function(data) {
+			$.getJSON('http://localhost:1337/data', function(data) {
 				button1 = document.getElementById("button_1");
 				button2 = document.getElementById("button_2");
 				button3 = document.getElementById("button_3");
+				document.getElementById("start_time").innerHTML = data.start_time;
+				document.getElementById("runtime_time").innerHTML = data.runtime;
+				document.getElementById("lane_1").innerHTML = data.running;
+				
+				//Change between TimeTable and Runtime
+			 	var a = document.getElementById("timetable_container");
+				var b = document.getElementById("runtime_container");
+				var c = document.getElementById("misc_container")
+				if (data.running == "true") {
+					a.style.display = "block";
+					b.style.display = "none";
+					c.style.display = "block";
+				} else {
+					a.style.display = "none";
+					b.style.display = "block";
+					c.style.display = "none";
+				}
 
 				if(data.Button_1 == true){button1.style.background = "red"} else {button1.style.background = "lime";}
 				if(data.Button_2 == true){button2.style.background = "red"} else {button2.style.background = "lime";}
@@ -57,7 +69,6 @@
 				});
 			return 0
 		}
-		setInterval(refresh_duration,1000);
 		setInterval(refresh_IO,1000);
 		setInterval(get_IP,10000)
 	</script>		
