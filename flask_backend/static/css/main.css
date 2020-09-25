@@ -1,0 +1,29 @@
+/* CSS Document */
+
+#mainpage {
+    background-color: rgba(144,213,255,1.00);
+    font-family: Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+    font-weight: 400;
+    font-style: normal;
+	
+}
+#mainpage {
+}
+
+
+#ip_adress {
+    font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+}
+.container {
+    border: thin solid rgba(123,123,123,1.00);
+    margin: 4%;
+}
+
+.button_indicator {
+    background-color: lime;
+    border: 2px solid black;
+}
+
+.runtime {
+	font-size: 30
+}
