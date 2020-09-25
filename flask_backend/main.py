@@ -43,12 +43,12 @@ def handle_mqtt_message(client, userdata, message):
         else:
             stuff["running"] = False
     elif(data["topic"] == "stopwatch/runtime"):
-        stuff["runtime"] = data['payload']
+        stuff["runtime"] = "{:10.2f}".format(float(data['payload']))
         print(data['payload'])
     elif(data["topic"] == "stopwatch/start_time"):
         stuff["start_time"] = data["payload"]
     elif(data["topic"] == "stopwatch/time_1"):
-        stuff["time_1"] = data['payload']
+        stuff["time_1"] = "{:10.2f}".format(float(data['payload']))
     elif(data["topic"] == "stopwatch/button"):
         buttons = json.loads(data['payload'])
         stuff["button_1"] = bool(buttons["Button_1"])
