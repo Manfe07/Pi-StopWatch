@@ -28,8 +28,8 @@ while(1):
                 time.sleep(0.5)
             else:
                 stopwatch.stop()
-                client.publish("stopwatch/duration", str(stopwatch.get_duration()),retain=True)
+                client.publish("stopwatch/time_1", stopwatch.get_duration().total_seconds(),retain=True)
                 time.sleep(0.5)
             client.publish("stopwatch/running", str(stopwatch.running),retain=True)
     if(stopwatch.running):
-        client.publish("stopwatch/duration", str(stopwatch.get_runtime()),retain=True)
+        client.publish("stopwatch/runtime", stopwatch.get_runtime().total_seconds(),retain=True)
