@@ -10,6 +10,7 @@ class Stopwatch:
         self.button_2 = button(38)
         self.button_3 = button(36)
         self.running = False
+        self.armed = True
 
     def start(self):
         if(self.running == False):

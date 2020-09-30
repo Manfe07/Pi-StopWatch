@@ -65,8 +65,6 @@
 				var b = document.getElementById("runtime_container");
 				var c = document.getElementById("misc_container")
 				
-				console.log("running: " + data.running);
-				console.log("race_activ: " + race_activ);
 				if ((data.running == false) && (race_activ == true)) {
 					race_activ = false;
 					document.getElementById('horn_short').play();
@@ -89,29 +87,36 @@
 					console.log(race_activ);
 				}
 
-				if(data.Button_1 == true){button1.style.background = "red"} else {button1.style.background = "lime";}
-				if(data.Button_2 == true){button2.style.background = "red"} else {button2.style.background = "lime";}
-				if(data.Button_3 == true){button3.style.background = "red"} else {button3.style.background = "lime";}
+				if(data.button_1 == true){button1.style.background = "red"} else {button1.style.background = "lime";}
+				if(data.button_2 == true){button2.style.background = "red"} else {button2.style.background = "lime";}
+				if(data.button_3 == true){button3.style.background = "red"} else {button3.style.background = "lime";}
 				
-				armed = data.armed;
 				
-				if(armed == true){
+				if(data.armed == true){
 					button_armed.style.background = "red";
-					button_armed.innerHTML = "<b>ARMED</b>";
+					button_armed.innerHTML = "ARMED";
+					armed = true;
 				}
 				else{
 					button_armed.style.background = "lime";
 					button_armed.innerHTML = "Disarmed";
+					armed = false;
 				}
 				});
 			return 0
 		}
 		
 		function change_arm(){
-			if(armed == true)
+			if(armed == true){
 				$.get(url + "/webInput/disarm");
-			else
+				armed = false;
+				console.log("changed to " + armed);
+			}
+			else{
 				$.get(url + "/webInput/arm");
+				armed = true;
+				console.log("changed to " + armed);
+			}
 		}
 		
 		function change_gif(){
