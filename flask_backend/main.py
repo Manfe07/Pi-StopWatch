@@ -20,6 +20,7 @@ stuff = {
     "start_time": "",
     "runtime": "000.00",
     "time_1": "000.00",
+    "armed": False,
     "running": False,
     "button_1": False,
     "button_2": False,
@@ -54,10 +55,24 @@ def handle_mqtt_message(client, userdata, message):
         stuff["button_1"] = bool(buttons["Button_1"])
         stuff["button_1"] = bool(buttons["Button_2"])
         stuff["button_1"] = bool(buttons["Button_3"])
+    elif(data["topic"] == "stopwatch/armed"):
+        stuff["armed"] = bool(data["payload"])
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/webInput/<data1>")
+def webInput(data1):
+    if (data1 == "arm"):
+        mqtt.publish("stopwatch/armed", True)
+        stuff["armed"] = True
+        return "armed"
+    elif (data1 == "disarm"):
+        mqtt.publish("stopwatch/armed", False)
+        stuff["armed"] = False
+        return "disarmed"
+    return "error"
 
 @app.route("/data")
 def data():
