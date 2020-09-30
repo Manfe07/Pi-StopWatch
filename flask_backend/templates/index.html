@@ -29,9 +29,10 @@
 		</div>
 		<div class="container" id="misc_container" align="center">
 			<p>
-				<a class="button_indicator" id="button_1">Button 1</a>
-				<a class="button_indicator" id="button_2">Button 2</a>
-				<a class="button_indicator" id="button_3">Button 3</a>
+				<button class="button_indicator" id="button_1">1</button>
+				<button class="button_indicator" id="button_2">2</button>
+				<button class="button_indicator" id="button_3">3</button>
+				<button class="button_indicator" id="button_armed" onclick="change_arm()">disarmed</button>
 			</p>
 			<p>IP: <a id="ip_adress">000.000.000.000</a></p>
 		</div>
@@ -40,7 +41,8 @@
 	<script>
 		url = window.location.href;
 		race_activ = true;
-	
+		armed = false;
+		
 		function get_IP(){
 			$.getJSON(url + '/get_ip', function(data) {
 				document.getElementById("ip_adress").innerHTML = data.ip;
@@ -53,39 +55,68 @@
 				button1 = document.getElementById("button_1");
 				button2 = document.getElementById("button_2");
 				button3 = document.getElementById("button_3");
+				button_armed = document.getElementById("button_armed");
 				document.getElementById("start_time").innerHTML = data.start_time;
 				document.getElementById("runtime_time").innerHTML = data.runtime;
 				document.getElementById("lane_1").innerHTML = data.time_1;
 				
 				//Change between TimeTable and Runtime
-			 	var a = document.getElementById("timetable_container");
+			 	var timetable_container = document.getElementById("timetable_container");
 				var b = document.getElementById("runtime_container");
 				var c = document.getElementById("misc_container")
 				
-				if (data.running == false && race_activ == true) {
+				if ((data.running == false) && (race_activ == true)) {
 					race_activ = false;
 					document.getElementById('horn_short').play();
 					change_gif();
 					document.getElementById("title").innerHTML = "Stopwatch";
 					document.getElementById("headline").innerHTML = "Stopwatch";
-					a.style.display = "block";
+					timetable_container.style.display = "block";
 					b.style.display = "none";
 					c.style.display = "block";
-				} else if(data.running == true && race_activ == false){
+					console.log(race_activ);
+				}
+				else if((data.running == true) && (race_activ != true)){
 					race_activ = true;
 					document.getElementById('horn_start').play();
 					document.getElementById("title").innerHTML = "!!! - RACE IS GOING - !!!";
 					document.getElementById("headline").innerHTML = "!!! - RACE IS GOING - !!!";
-					a.style.display = "none";
+					timetable_container.style.display = "none";
 					b.style.display = "block";
 					c.style.display = "none";
+					console.log(race_activ);
 				}
 
-				if(data.Button_1 == true){button1.style.background = "red"} else {button1.style.background = "lime";}
-				if(data.Button_2 == true){button2.style.background = "red"} else {button2.style.background = "lime";}
-				if(data.Button_3 == true){button3.style.background = "red"} else {button3.style.background = "lime";}
+				if(data.button_1 == true){button1.style.background = "red"} else {button1.style.background = "lime";}
+				if(data.button_2 == true){button2.style.background = "red"} else {button2.style.background = "lime";}
+				if(data.button_3 == true){button3.style.background = "red"} else {button3.style.background = "lime";}
+				
+				
+				if(data.armed == true){
+					button_armed.style.background = "red";
+					button_armed.innerHTML = "ARMED";
+					armed = true;
+				}
+				else{
+					button_armed.style.background = "lime";
+					button_armed.innerHTML = "Disarmed";
+					armed = false;
+				}
 				});
 			return 0
+		}
+		
+		function change_arm(){
+			if(armed == true){
+				$.get(url + "/webInput/disarm");
+				armed = false;
+				console.log("changed to " + armed);
+			}
+			else{
+				$.get(url + "/webInput/arm");
+				armed = true;
+				console.log("changed to " + armed);
+			}
 		}
 		
 		function change_gif(){

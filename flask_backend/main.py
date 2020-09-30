@@ -20,6 +20,7 @@ stuff = {
     "start_time": "",
     "runtime": "000.00",
     "time_1": "000.00",
+    "armed": False,
     "running": False,
     "button_1": False,
     "button_2": False,
@@ -52,18 +53,33 @@ def handle_mqtt_message(client, userdata, message):
     elif(data["topic"] == "stopwatch/button"):
         buttons = json.loads(data['payload'])
         stuff["button_1"] = bool(buttons["Button_1"])
-        stuff["button_1"] = bool(buttons["Button_2"])
-        stuff["button_1"] = bool(buttons["Button_3"])
+        stuff["button_2"] = bool(buttons["Button_2"])
+        stuff["button_3"] = bool(buttons["Button_3"])
+    elif(data["topic"] == "stopwatch/armed"):
+        if(data["payload"] == "true"):
+            stuff["armed"] = True
+        else:
+            stuff["armed"] = False
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+@app.route("/webInput/<data1>")
+def webInput(data1):
+    if (data1 == "arm"):
+        mqtt.publish("stopwatch/webInput/armed", "true")
+        stuff["armed"] = True
+        return "armed"
+    elif (data1 == "disarm"):
+        mqtt.publish("stopwatch/webInput/armed", "false")
+        stuff["armed"] = False
+        return "disarmed"
+    return "error"
+
 @app.route("/data")
 def data():
     global stuff
-    stuff["Button_2"] = bool(random.getrandbits(1))
-    stuff["Button_3"] = bool(random.getrandbits(1))
     return json.dumps(stuff)
 
 @app.route("/get_ip")
