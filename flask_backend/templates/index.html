@@ -29,7 +29,7 @@
 		</div>
 		<div class="container" id="misc_container" align="center">
 			<p>
-				<button class="button_indicator" id="button_1">1</button>
+				<button	 class="button_indicator" id="button_1">1</button>
 				<button class="button_indicator" id="button_2">2</button>
 				<button class="button_indicator" id="button_3">3</button>
 				<button class="button_indicator" id="button_armed" onclick="change_arm()">disarmed</button>
@@ -59,6 +59,8 @@
 				document.getElementById("start_time").innerHTML = data.start_time;
 				document.getElementById("runtime_time").innerHTML = data.runtime;
 				document.getElementById("lane_1").innerHTML = data.time_1;
+				document.getElementById("lane_2").innerHTML = data.time_2;
+				document.getElementById("lane_3").innerHTML = data.time_3;
 				
 				//Change between TimeTable and Runtime
 			 	var timetable_container = document.getElementById("timetable_container");
