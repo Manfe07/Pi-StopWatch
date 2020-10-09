@@ -44,7 +44,7 @@ while(1):
                 client.publish("stopwatch/armed", "true", retain=True)
 
         client.publish("stopwatch/button", json.dumps(input),retain=True)
-        if ((input["Button_1"] == True) or (input["Button_2"] == True) or (input["Button_3"] == True)) and stopwatch.armed == True:
+        if ((input["Button_1"] == True) or (input["Button_2"] == True) or (input["Button_3"] == True)) and (stopwatch.armed == True or stopwatch.running == True):
             if(stopwatch.running == False):
                 stopwatch.start()
                 client.publish("stopwatch/start_time", str(stopwatch.start_time),retain=True)
