@@ -48,6 +48,9 @@ while(1):
             if(stopwatch.running == False):
                 stopwatch.start()
                 client.publish("stopwatch/start_time", str(stopwatch.start_time),retain=True)
+                client.publish("stopwatch/time_1", "0.0", retain=True)
+                client.publish("stopwatch/time_2", "0.0", retain=True)
+                client.publish("stopwatch/time_3", "0.0", retain=True)
                 time.sleep(0.5)
             else:
                 if(input["Button_1"] == True):
