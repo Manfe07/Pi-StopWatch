@@ -34,18 +34,39 @@ while(1):
     input = stopwatch.get_input()
     if(old_input != input):
         old_input = input
+        print(input)
+        if(input["Button_R"] == True):
+            if(stopwatch.armed):
+                stopwatch.armed = False
+                client.publish("stopwatch/armed", "false", retain=True)
+            else:
+                stopwatch.armed = True
+                client.publish("stopwatch/armed", "true", retain=True)
+
         client.publish("stopwatch/button", json.dumps(input),retain=True)
-        if(input["Button_1"] == True and stopwatch.armed == True):
+        if ((input["Button_1"] == True) or (input["Button_2"] == True) or (input["Button_3"] == True)) and stopwatch.armed == True:
             if(stopwatch.running == False):
                 stopwatch.start()
                 client.publish("stopwatch/start_time", str(stopwatch.start_time),retain=True)
+                client.publish("stopwatch/time_1", "0.0", retain=True)
+                client.publish("stopwatch/time_2", "0.0", retain=True)
+                client.publish("stopwatch/time_3", "0.0", retain=True)
                 time.sleep(0.5)
             else:
-                stopwatch.stop()
-                client.publish("stopwatch/time_1", stopwatch.get_duration().total_seconds(),retain=True)
-                client.publish("stopwatch/armed", "false",retain=True)
-                stopwatch.armed = False
-                time.sleep(0.5)
+                if(input["Button_1"] == True):
+                    stopwatch.lane_1.stop()
+                    client.publish("stopwatch/time_1", str(stopwatch.lane_1.get_duration().total_seconds()), retain=True)
+                if(input["Button_2"] == True):
+                    stopwatch.lane_2.stop()
+                    client.publish("stopwatch/time_2", str(stopwatch.lane_2.get_duration().total_seconds()), retain=True)
+                if(input["Button_3"] == True):
+                    stopwatch.lane_3.stop()
+                    client.publish("stopwatch/time_3", str(stopwatch.lane_3.get_duration().total_seconds()), retain=True)
+
+                if(stopwatch.check_Finish() == True):
+                    client.publish("stopwatch/armed", "false",retain=True)
+                    stopwatch.armed = False
+                    time.sleep(0.5)
             client.publish("stopwatch/running", str(stopwatch.running),retain=True)
     if(stopwatch.running):
         client.publish("stopwatch/runtime", stopwatch.get_runtime().total_seconds(),retain=True)

@@ -5,10 +5,14 @@ import json
 class Stopwatch:
     def __init__(self):
         self.start_time = datetime.datetime.now()
-        self.stop_time = datetime.datetime.now()
-        self.button_1 = button(40)
-        self.button_2 = button(38)
-        self.button_3 = button(36)
+        self.stop_time_lane1 = datetime.datetime.now()
+        self.button_1 = button(36)
+        self.button_2 = button(37)
+        self.button_3 = button(38)
+        self.button_R = button(40)
+        self.lane_1 = lane()
+        self.lane_2 = lane()
+        self.lane_3 = lane()
         self.running = False
         self.armed = True
 
@@ -16,34 +20,31 @@ class Stopwatch:
         if(self.running == False):
             self.running = True
             self.start_time = datetime.datetime.now()
+            self.lane_1.start(self.start_time)
+            self.lane_2.start(self.start_time)
+            self.lane_3.start(self.start_time)
             return self.start_time
         else:
             return -1
 
-    def stop(self):
-        if (self.running == True):
+    def check_Finish(self):
+        if(self.lane_1.finished and self.lane_2.finished and self.lane_3.finished):
             self.running = False
-            self.stop_time = datetime.datetime.now()
-            return self.stop_time
+            self.armed = False
+            return True
         else:
-            return -1
-
-    def get_duration(self):
-        if(self.running == False):
-            duration = self.stop_time - self.start_time
-            return duration
-        else:
-            return -1
+            return False
 
     def get_runtime(self):
         runtime = datetime.datetime.now() - self.start_time
         return runtime
 
     def get_input(self):
-        input = {"Button_1": False, "Button_2": False, "Button_3": False}
+        input = {"Button_1": False, "Button_2": False, "Button_3": False, "Button_R": False}
         input["Button_1"] = self.button_1.get_state()
         input["Button_2"] = self.button_2.get_state()
         input["Button_3"] = self.button_3.get_state()
+        input["Button_R"] = self.button_R.get_state()
         return input
 
 class button:
@@ -57,3 +58,22 @@ class button:
             return True
         else:
             return False
+
+class lane:
+    def __init__(self):
+        self.finished = False
+        self.startTime = datetime.datetime.now()
+        self.stopTime = datetime.datetime.now()
+
+    def start(self, _startTime):
+        self.startTime = _startTime
+        self.finished = False
+
+    def stop(self):
+        if(self.finished == False):
+            self.stopTime = datetime.datetime.now()
+            self.finished = True
+
+    def get_duration(self):
+        duration = self.stopTime - self.startTime
+        return duration

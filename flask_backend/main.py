@@ -20,6 +20,8 @@ stuff = {
     "start_time": "",
     "runtime": "000.00",
     "time_1": "000.00",
+    "time_2": "000.00",
+    "time_3": "000.00",
     "armed": False,
     "running": False,
     "button_1": False,
@@ -50,6 +52,10 @@ def handle_mqtt_message(client, userdata, message):
         stuff["start_time"] = data["payload"]
     elif(data["topic"] == "stopwatch/time_1"):
         stuff["time_1"] = "{:10.2f}".format(float(data['payload']))
+    elif(data["topic"] == "stopwatch/time_2"):
+        stuff["time_2"] = "{:10.2f}".format(float(data['payload']))
+    elif(data["topic"] == "stopwatch/time_3"):
+        stuff["time_3"] = "{:10.2f}".format(float(data['payload']))
     elif(data["topic"] == "stopwatch/button"):
         buttons = json.loads(data['payload'])
         stuff["button_1"] = bool(buttons["Button_1"])
