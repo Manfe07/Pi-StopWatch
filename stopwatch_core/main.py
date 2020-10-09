@@ -12,11 +12,9 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
     if(msg.topic == "stopwatch/webInput/armed"):
         if(msg.payload == "true"):
-            stopwatch.armed = True
-            client.publish("stopwatch/armed", "true")
+            arm(True)
         else:
-            stopwatch.armed = False
-            client.publish("stopwatch/armed", "false")
+            arm(False)
 
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -29,6 +27,17 @@ client.loop_start()
 stopwatch = stopwatch.Stopwatch()
 
 old_input = stopwatch.get_input()
+
+def arm(_state):
+    if _state == True:
+        stopwatch.armed = True
+        stopwatch.led_Red.set_state(True)
+        client.publish("stopwatch/armed", "false", retain=True)
+    else:
+        stopwatch.armed = False
+        stopwatch.led_Red.set_state(False)
+        client.publish("stopwatch/armed", "true", retain=True)
+
 while(1):
     time.sleep(.01)
     input = stopwatch.get_input()
@@ -37,11 +46,9 @@ while(1):
         print(input)
         if(input["Button_R"] == True):
             if(stopwatch.armed):
-                stopwatch.armed = False
-                client.publish("stopwatch/armed", "false", retain=True)
+                arm(False)
             else:
-                stopwatch.armed = True
-                client.publish("stopwatch/armed", "true", retain=True)
+                arm(True)
 
         client.publish("stopwatch/button", json.dumps(input),retain=True)
         if ((input["Button_1"] == True) or (input["Button_2"] == True) or (input["Button_3"] == True)) and (stopwatch.armed == True or stopwatch.running == True):
@@ -64,8 +71,7 @@ while(1):
                     client.publish("stopwatch/time_3", str(stopwatch.lane_3.get_duration().total_seconds()), retain=True)
 
                 if(stopwatch.check_Finish() == True):
-                    client.publish("stopwatch/armed", "false",retain=True)
-                    stopwatch.armed = False
+                    arm(False)
                     time.sleep(0.5)
             client.publish("stopwatch/running", str(stopwatch.running),retain=True)
     if(stopwatch.running):
