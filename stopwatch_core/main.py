@@ -32,11 +32,11 @@ def arm(_state):
     if _state == True:
         stopwatch.armed = True
         stopwatch.led_Red.set_state(True)
-        client.publish("stopwatch/armed", "false", retain=True)
+        client.publish("stopwatch/armed", "true", retain=True)
     else:
         stopwatch.armed = False
         stopwatch.led_Red.set_state(False)
-        client.publish("stopwatch/armed", "true", retain=True)
+        client.publish("stopwatch/armed", "false", retain=True)
 
 while(1):
     time.sleep(.01)

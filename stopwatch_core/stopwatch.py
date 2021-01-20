@@ -10,7 +10,7 @@ class Stopwatch:
         self.button_2 = button(37)
         self.button_3 = button(38)
         self.button_R = button(40)
-        self.led_Red = led(11)
+        self.led_Red = led(33)
         self.lane_1 = lane()
         self.lane_2 = lane()
         self.lane_3 = lane()
