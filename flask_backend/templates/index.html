@@ -34,7 +34,10 @@
 			<p>
 				<button class="button_indicator" id="button_armed" onclick="change_arm()">disarmed</button>
 			</p>
-			<p>IP: <a id="ip_adress">000.000.000.000</a></p>
+			<p>IP: <a id="ip_adress">000.000.000.000</a> &nbsp;&nbsp;&nbsp;&nbsp;
+				Battery: <a id="battery_capacity">000</a>%  &nbsp;&nbsp;&nbsp;&nbsp; 
+				Spannung: <a id="battery_voltage">0.000</a>V 
+			</p>
 		</div>
 		</body>
 	
@@ -46,6 +49,15 @@
 		function get_IP(){
 			$.getJSON(url + '/get_ip', function(data) {
 				document.getElementById("ip_adress").innerHTML = data.ip;
+				});
+			return 0
+		}
+		
+		function get_Battery(){
+			$.getJSON(url + '/ups', function(data) {
+				document.getElementById("battery_voltage").innerHTML = data.voltage;
+				document.getElementById("battery_capacity").innerHTML = data.capacity;
+				console.log(data.capacity);
 				});
 			return 0
 		}
@@ -130,7 +142,9 @@
 		}
 		
 		get_IP();
+		get_Battery();
+		setInterval(get_Battery, 5000);
 		setInterval(refresh_IO,200);
-		setInterval(get_IP,10000)
+		setInterval(get_IP,10000);
 	</script>		
 </html>

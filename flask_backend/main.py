@@ -1,5 +1,6 @@
 import commands
 import json, random, datetime
+import x750ups as x750
 
 from flask_mqtt import Mqtt
 from flask import Flask, render_template, request
@@ -14,7 +15,7 @@ app.config['MQTT_REFRESH_TIME'] = 0.1
 mqtt = Mqtt(app)
 mqtt.init_app(app)
 
-ip = "131.123.123.123"
+ip = "123.123.123.123"
 
 stuff = {
     "start_time": "",
@@ -87,6 +88,17 @@ def webInput(data1):
 def data():
     global stuff
     return json.dumps(stuff)
+
+@app.route("/ups")
+def ups():
+    voltage = "{:10.2f}".format(float(x750.getVolage()))
+    capacity = x750.getCapacity()
+    data = {
+        "voltage": voltage,
+        "capacity": capacity,
+    }
+    return json.dumps(data)
+
 
 @app.route("/get_ip")
 def get_ip():
