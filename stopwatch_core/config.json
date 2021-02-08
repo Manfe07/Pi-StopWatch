@@ -5,5 +5,9 @@
     "button_3": 38,
     "button_R": 40,
     "led_armed": 33
+  },
+  "mqtt":{
+    "host": "localhost",
+    "port": 1883
   }
 }
