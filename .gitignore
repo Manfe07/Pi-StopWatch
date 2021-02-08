@@ -21,7 +21,7 @@ dw_php_codehinting.config
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-_notes/
+*/_notes/
 
 # Generated files
 .idea/**/contentModel.xml
