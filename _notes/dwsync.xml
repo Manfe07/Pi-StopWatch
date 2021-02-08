@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name=".gitattributes" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132453242767259604" remote="132454479000000000" Dst="2" />
-<file name=".gitignore" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132453314435430854" remote="132454479010000000" Dst="2" />
-<file name="README.md" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132453242767269578" remote="132454479700000000" Dst="2" />
+<file name=".gitattributes" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132453227572649873" remote="132459783090000000" Dst="2" />
+<file name=".gitignore" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132459729238843301" remote="132459783110000000" Dst="2" />
+<file name="README.md" server="192.168.0.216//var/www/website/Pi-StopWatch/" local="132453227572162308" remote="132459782170000000" Dst="2" />
+<file name=".gitattributes" server="192.168.11.213//var/www/website/Pi-StopWatch/" local="132453227572649873" remote="132473469790000000" Dst="2" />
+<file name=".gitignore" server="192.168.11.213//var/www/website/Pi-StopWatch/" local="132459729238843301" remote="132473469790000000" Dst="2" />
+<file name="README.md" server="192.168.11.213//var/www/website/Pi-StopWatch/" local="132453227572162308" remote="132467464050000000" Dst="2" />
+<file name=".gitattributes" server="192.168.0.216" local="132453227572649873" remote="132459772890000000" Dst="2" />
+<file name=".gitignore" server="192.168.0.216" local="132459729238843301" remote="132459772890000000" Dst="2" />
+<file name="README.md" server="192.168.0.216" local="132453227572162308" remote="132459773030000000" Dst="2" />
 </dwsync>

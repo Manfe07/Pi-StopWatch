@@ -10,6 +10,7 @@ class Stopwatch:
         self.button_2 = button(37)
         self.button_3 = button(38)
         self.button_R = button(40)
+        self.led_Red = led(33)
         self.lane_1 = lane()
         self.lane_2 = lane()
         self.lane_3 = lane()
@@ -77,3 +78,16 @@ class lane:
     def get_duration(self):
         duration = self.stopTime - self.startTime
         return duration
+
+class led:
+    def __init__(self, _pin):
+        self.pin = _pin
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.output(self.pin, 1)
+
+    def set_state(self, _state):
+        if _state == True:
+            GPIO.output(self.pin, 1)
+        else:
+            GPIO.output(self.pin, 0)
