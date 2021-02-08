@@ -2,7 +2,7 @@ import datetime
 import RPi.GPIO as GPIO
 import json
 
-with open("config.json") as json_data_file:
+with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
 class Stopwatch:

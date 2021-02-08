@@ -3,11 +3,12 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.subscribe as subscribe
 import stopwatch
 
-with open("config.json") as json_data_file:
+with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
+
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     client.subscribe("stopwatch/webInput/#")
