@@ -1,15 +1,23 @@
 import os
 #import commands
 import json, random, datetime
-import x750ups as x750
 
 from flask_mqtt import Mqtt
 from flask import Flask, render_template, send_file, request
 
+with open("../config.json") as json_data_file:
+    config = json.load(json_data_file)
+
+if (config["x750"]["enable"] == True):
+    import x750ups as x750
+
+mqttHost = config["mqtt"]["host"]
+mqttPort = config["mqtt"]["port"]
+
 app = Flask(__name__)
-app.config['MQTT_BROKER_URL'] = '127.0.0.1'
+app.config['MQTT_BROKER_URL'] = mqttHost
 #app.config['MQTT_BROKER_URL'] = '192.168.11.213'
-app.config['MQTT_BROKER_PORT'] = 1883
+app.config['MQTT_BROKER_PORT'] = mqttPort
 app.config['MQTT_USERNAME'] = ''
 app.config['MQTT_PASSWORD'] = ''
 app.config['MQTT_REFRESH_TIME'] = 0.1
@@ -102,8 +110,13 @@ def get_image():
 
 @app.route("/ups")
 def ups():
-    voltage = "{:10.2f}".format(float(x750.getVolage()))
-    capacity = "{:0.0f}".format(float(x750.getCapacity()))
+    if(config["x750"]["enable"] == True):
+        voltage = "{:10.2f}".format(float(x750.getVolage()))
+        capacity = "{:0.0f}".format(float(x750.getCapacity()))
+    else:
+        voltage = 0
+        capacity = 0
+        
     data = {
         "voltage": voltage,
         "capacity": capacity,
