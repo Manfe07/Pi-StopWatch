@@ -15,8 +15,7 @@
 	<h1 id="headline" align="left">Settings</h1>
 	<div class="setting_div">
 		<a class="settings_h2">Lokal</a><br>
-	  	<input type="checkbox" id="checkbox_startSound">Start-Sound<br>
-		<input type="checkbox" id="checkbox_finishSound">Finish-Sound
+	  	<input type="checkbox" id="checkbox_sound">Sound<br>
 	</div>
 	<div class="setting_div">
 		<a class="settings_h2">Info</a><br>
@@ -27,35 +26,26 @@
 	<div>
 		<button onClick="save_settings()">Save</button>
 		<button onClick="load_settings()">Load</button>
+		<button onclick="history.back()">Back</button>
 	</div>
 </body>
 <script>
 		url = window.location.hostname;
 		race_activ = true;
 		armed = false;
-		startSound = true;	//default ON
-		finishSound = true;	//default ON
+		sound = true;	//default ON
 	
 		function load_settings(){
 			//Start-Sound
-			if(localStorage.getItem('startSound')!=null){
-				startSound = (localStorage.getItem('startSound') == "true");
+			if(localStorage.getItem('sound')!=null){
+				sound = (localStorage.getItem('sound') == "true");
 			}
-			document.getElementById("checkbox_startSound").checked = startSound;
-			//Finish-Sound
-			if(localStorage.getItem('finishSound')!=null){
-				finishSound = (localStorage.getItem('finishSound') == "true");
-			}
-			document.getElementById("checkbox_finishSound").checked = finishSound;
-			
+			document.getElementById("checkbox_sound").checked = sound;
 		}
 	
 		function save_settings(){
-			startSound = document.getElementById("checkbox_startSound").checked;
-			console.log(startSound);
-			finishSound = document.getElementById("checkbox_finishSound").checked;
-			localStorage.setItem('startSound',startSound);
-			localStorage.setItem('finishSound',finishSound);
+			sound = document.getElementById("checkbox_sound").checked;
+			localStorage.setItem('sound',sound);
 		}
 	
 		function get_Battery(){
