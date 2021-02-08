@@ -24,3 +24,18 @@
 .runtime {
     font-size: 600%
 }
+.button_svg {
+    height: 20px;
+}
+.setting_div {
+    margin-top: 20px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    border: thin solid hsla(203,23%,58%,1.00);
+}
+.settings_h2{
+    font-weight: bolder;
+    font-family: inherit;
+    font-size: 18px;
+}
