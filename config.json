@@ -6,8 +6,11 @@
     "button_R": 40,
     "led_armed": 33
   },
-  "mqtt":{
+  "mqtt": {
     "host": "localhost",
     "port": 1883
+  },
+  "x750": {
+    "enable": true
   }
 }
