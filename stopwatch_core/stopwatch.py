@@ -2,15 +2,18 @@ import datetime
 import RPi.GPIO as GPIO
 import json
 
+with open("config.json") as json_data_file:
+    config = json.load(json_data_file)
+
 class Stopwatch:
     def __init__(self):
         self.start_time = datetime.datetime.now()
         self.stop_time_lane1 = datetime.datetime.now()
-        self.button_1 = button(36)
-        self.button_2 = button(37)
-        self.button_3 = button(38)
-        self.button_R = button(40)
-        self.led_Red = led(33)
+        self.button_1 = button(config["rpi"]["button_1"])
+        self.button_2 = button(config["rpi"]["button_2"])
+        self.button_3 = button(config["rpi"]["button_3"])
+        self.button_R = button(config["rpi"]["button_R"])
+        self.led_Red = led(config["rpi"]["led_armed"])
         self.lane_1 = lane()
         self.lane_2 = lane()
         self.lane_3 = lane()
