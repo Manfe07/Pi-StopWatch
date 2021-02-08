@@ -1,2 +1,1 @@
-paho
-opencv-python
+paho-mqtt==1.5.1
