@@ -37,14 +37,14 @@
 			<p>IP: <a id="ip_adress">000.000.000.000</a> &nbsp;&nbsp;&nbsp;&nbsp;
 				Battery: <a id="battery_capacity">000</a>%  &nbsp;&nbsp;&nbsp;&nbsp; 
 				<a id="button_settings"  href="settings"><img src="../static/svg/settings.svg" class="button_svg"></a> &nbsp;&nbsp;&nbsp;&nbsp;
-				<a id ="button_camera" href="get_image"><img src="../static/svg/camera.svg" href="www.google.de" class="button_svg"></a>
+				<a id ="button_camera" href="get_image"><img src="../static/svg/camera.svg" class="button_svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<img id ="button_mute" src="../static/svg/speaker.svg" class="button_svg">
 			</p>
 		</div>
 		</body>
 	
 	<script>
-		startSound = true;
-		finishSound = true;
+		sound = true;
 		url = window.location.href;
 		race_activ = true;
 		armed = false;
@@ -65,16 +65,22 @@
 		}
 		
 		function load_settings(){
-			//Start-Sound
-			if(localStorage.getItem('startSound')!=null){
-				startSound = (localStorage.getItem('startSound') == "true");
+			//Sound
+			if(localStorage.getItem('sound')!=null){
+				sound = (localStorage.getItem('sound') == "true");
+				console.log("storage:" + sound)
 			}
-			//Finish-Sound
-			if(localStorage.getItem('finishSound')!=null){
-				finishSound = (localStorage.getItem('finishSound') == "true");
+			if(sound == true){
+				document.getElementById("button_mute").src = "../static/svg/speaker.svg";
+				console.log("change true");
+			}
+			else{
+				document.getElementById("button_mute").src = "../static/svg/mute-speaker.svg";
+				console.log("change false");
 			}
 			
 		}
+		
 		function refresh_IO(){
 			$.getJSON('/data', function(data) {
 				lane_1_finish = document.getElementById("lane_1_finish");
@@ -94,7 +100,9 @@
 				
 				if ((data.running == false) && (race_activ == true)) {
 					race_activ = false;
-					if(finishSound){document.getElementById('horn_short').play();}
+					if(sound == true){
+						document.getElementById('horn_short').play();
+					}
 					change_gif();
 					document.getElementById("title").innerHTML = "Stopwatch";
 					document.getElementById("headline").innerHTML = "Stopwatch";
@@ -105,7 +113,9 @@
 				}
 				else if((data.running == true) && (race_activ != true)){
 					race_activ = true;
-					if(startSound){document.getElementById('horn_start').play();}
+					if(sound == true){
+						document.getElementById('horn_start').play();
+					}
 					document.getElementById("title").innerHTML = "!!! - RACE IS GOING - !!!";
 					document.getElementById("headline").innerHTML = "!!! - RACE IS GOING - !!!";
 					timetable_container.style.display = "none";
