@@ -34,24 +34,49 @@
 			<p>
 				<button class="button_indicator" id="button_armed" onclick="change_arm()">disarmed</button>
 			</p>
-			<p>IP: <a id="ip_adress">000.000.000.000</a></p>
+			<p>IP: <a id="ip_adress">000.000.000.000</a> &nbsp;&nbsp;&nbsp;&nbsp;
+				Battery: <a id="battery_capacity">000</a>%  &nbsp;&nbsp;&nbsp;&nbsp; 
+				<a id="button_settings"  href="settings"><img src="../static/svg/settings.svg" class="button_svg"></a> &nbsp;&nbsp;&nbsp;&nbsp;
+				<a id ="button_camera" href="get_image"><img src="../static/svg/camera.svg" href="www.google.de" class="button_svg"></a>
+			</p>
 		</div>
 		</body>
 	
 	<script>
+		startSound = true;
+		finishSound = true;
 		url = window.location.href;
 		race_activ = true;
 		armed = false;
 		
 		function get_IP(){
-			$.getJSON(url + '/get_ip', function(data) {
+			$.getJSON('/get_ip', function(data) {
 				document.getElementById("ip_adress").innerHTML = data.ip;
 				});
 			return 0
 		}
 		
+		function get_Battery(){
+			$.getJSON('/ups', function(data) {
+				document.getElementById("battery_capacity").innerHTML = data.capacity;
+				console.log(data.capacity);
+				});
+			return 0
+		}
+		
+		function load_settings(){
+			//Start-Sound
+			if(localStorage.getItem('startSound')!=null){
+				startSound = (localStorage.getItem('startSound') == "true");
+			}
+			//Finish-Sound
+			if(localStorage.getItem('finishSound')!=null){
+				finishSound = (localStorage.getItem('finishSound') == "true");
+			}
+			
+		}
 		function refresh_IO(){
-			$.getJSON(url + '/data', function(data) {
+			$.getJSON('/data', function(data) {
 				lane_1_finish = document.getElementById("lane_1_finish");
 				lane_2_finish = document.getElementById("lane_2_finish");
 				lane_3_finish = document.getElementById("lane_3_finish");
@@ -64,28 +89,28 @@
 				
 				//Change between TimeTable and Runtime
 			 	var timetable_container = document.getElementById("timetable_container");
-				var b = document.getElementById("runtime_container");
-				var c = document.getElementById("misc_container")
+				var runtime_container = document.getElementById("runtime_container");
+				var misc_container = document.getElementById("misc_container")
 				
 				if ((data.running == false) && (race_activ == true)) {
 					race_activ = false;
-					document.getElementById('horn_short').play();
+					if(finishSound){document.getElementById('horn_short').play();}
 					change_gif();
 					document.getElementById("title").innerHTML = "Stopwatch";
 					document.getElementById("headline").innerHTML = "Stopwatch";
 					timetable_container.style.display = "block";
-					b.style.display = "none";
-					c.style.display = "block";
+					runtime_container.style.display = "none";
+					misc_container.style.display = "block";
 					console.log(race_activ);
 				}
 				else if((data.running == true) && (race_activ != true)){
 					race_activ = true;
-					document.getElementById('horn_start').play();
+					if(startSound){document.getElementById('horn_start').play();}
 					document.getElementById("title").innerHTML = "!!! - RACE IS GOING - !!!";
 					document.getElementById("headline").innerHTML = "!!! - RACE IS GOING - !!!";
 					timetable_container.style.display = "none";
-					b.style.display = "block";
-					c.style.display = "none";
+					runtime_container.style.display = "block";
+					misc_container.style.display = "none";
 					console.log(race_activ);
 				}
 				if(data.time_1 == "      0.00"){lane_1_finish.style.background = "red"} else {lane_1_finish.style.background = "lime";}
@@ -130,7 +155,10 @@
 		}
 		
 		get_IP();
+		get_Battery();
+		load_settings();
+		setInterval(get_Battery, 5000);
 		setInterval(refresh_IO,200);
-		setInterval(get_IP,10000)
+		setInterval(get_IP,10000);
 	</script>		
 </html>

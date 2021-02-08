@@ -1,8 +1,10 @@
-import commands
+import os
+#import commands
 import json, random, datetime
+import x750ups as x750
 
 from flask_mqtt import Mqtt
-from flask import Flask, render_template, request
+from flask import Flask, render_template, send_file, request
 
 app = Flask(__name__)
 app.config['MQTT_BROKER_URL'] = '127.0.0.1'
@@ -14,7 +16,7 @@ app.config['MQTT_REFRESH_TIME'] = 0.1
 mqtt = Mqtt(app)
 mqtt.init_app(app)
 
-ip = "131.123.123.123"
+ip = "123.123.123.123"
 
 stuff = {
     "start_time": "",
@@ -71,6 +73,10 @@ def handle_mqtt_message(client, userdata, message):
 def index():
     return render_template("index.html")
 
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
 @app.route("/webInput/<data1>")
 def webInput(data1):
     if (data1 == "arm"):
@@ -88,9 +94,29 @@ def data():
     global stuff
     return json.dumps(stuff)
 
+@app.route("/get_image")
+def get_image():
+    file = "../stopwatch_core/test.jpg"
+    return send_file(file, mimetype='image/gif')
+
+
+@app.route("/ups")
+def ups():
+    voltage = "{:10.2f}".format(float(x750.getVolage()))
+    capacity = "{:0.0f}".format(float(x750.getCapacity()))
+    data = {
+        "voltage": voltage,
+        "capacity": capacity,
+    }
+    return json.dumps(data)
+
+
 @app.route("/get_ip")
 def get_ip():
-    ip = commands.getoutput('hostname -I')
+    stream = os.popen('hostname -I')
+    ip = stream.read()
+
+    #ip = commands.getoutput('hostname -I')
     data = {"ip": str(ip)}
     return json.dumps(data)
 
