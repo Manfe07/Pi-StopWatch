@@ -11,6 +11,10 @@
     "port": 1883
   },
   "x750": {
-    "enable": true
+    "enable": false
+  },
+  "INA819" : {
+    "enable" : true
   }
+
 }

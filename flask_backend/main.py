@@ -1,15 +1,19 @@
 import os
 #import commands
-import json, random, datetime
+import json
 
 from flask_mqtt import Mqtt
-from flask import Flask, render_template, send_file, request
+from flask import Flask, render_template, send_file
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
 if (config["x750"]["enable"] == True):
-    import x750ups as x750
+    from flask_backend.modules import x750ups as x750
+
+elif (config["INA819"]["enable"] == True):
+    from flask_backend.modules.INA219 import INA219
+    ups = INA219(addr=0x42)
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
@@ -113,13 +117,21 @@ def ups():
     if(config["x750"]["enable"] == True):
         voltage = "{:10.2f}".format(float(x750.getVolage()))
         capacity = "{:0.0f}".format(float(x750.getCapacity()))
+        current = 0
+    elif(config["INA819"]["enable"] == True):
+        ups_data = ups.getData()
+        voltage = "{:10.2f}".format(float(ups_data["voltage"]))
+        capacity = "{:0.0f}".format(float(ups_data["percent"]))
+        current = "{:10.2f}".format(float(ups_data["current"]))
     else:
         voltage = 0
         capacity = 0
-        
+        current = 0
+
     data = {
         "voltage": voltage,
         "capacity": capacity,
+        "current": current
     }
     return json.dumps(data)
 
