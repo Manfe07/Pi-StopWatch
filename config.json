@@ -1,0 +1,20 @@
+{
+  "rpi": {
+    "button_1": 36,
+    "button_2": 37,
+    "button_3": 38,
+    "button_R": 40,
+    "led_armed": 33
+  },
+  "mqtt": {
+    "host": "localhost",
+    "port": 1883
+  },
+  "x750": {
+    "enable": false
+  },
+  "INA819" : {
+    "enable" : true
+  }
+
+}
