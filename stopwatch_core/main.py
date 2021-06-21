@@ -1,10 +1,18 @@
-import time, json
+import json
 import paho.mqtt.client as mqtt
-import paho.mqtt.subscribe as subscribe
 import stopwatch
+import schedule
+import time
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
+
+
+if (config["x750"]["enable"] == True):
+    import x750ups as x750
+
+elif (config["INA819"]["enable"] == True):
+    import INA219 as INA219
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
@@ -45,8 +53,36 @@ def arm(_state):
         client.publish("stopwatch/armed", "false", retain=True)
 
 
+def post_UPS():
+    if(config["x750"]["enable"] == True):
+        voltage = "{:10.2f}".format(float(x750.getVolage()))
+        capacity = "{:0.0f}".format(float(x750.getCapacity()))
+        current = 0
+    elif(config["INA819"]["enable"] == True):
+        ups = INA219.INA219(addr=0x42)
+        ups_data = ups.getData()
+        voltage = "{:10.2f}".format(float(ups_data["voltage"]))
+        capacity = "{:0.0f}".format(float(ups_data["percent"]))
+        current = "{:10.2f}".format(float(ups_data["current"]))
+    else:
+        voltage = 0
+        capacity = 0
+        current = 0
+
+    data = {
+        "voltage": voltage,
+        "capacity": capacity,
+        "current": current
+    }
+    client.publish("stopwatch/ups", json.dumps(data), retain=True)
+
+
+schedule.every(5).seconds.do(post_UPS)
+
 if __name__ == '__main__':
+    schedule.run_all()
     while(1):
+        schedule.run_pending()
         time.sleep(.01)
         input = stopwatch.get_input()
         if(old_input != input):

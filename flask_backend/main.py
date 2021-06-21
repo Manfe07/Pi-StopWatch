@@ -8,12 +8,6 @@ from flask import Flask, render_template, send_file
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
-if (config["x750"]["enable"] == True):
-    from modules import x750ups as x750
-
-elif (config["INA819"]["enable"] == True):
-    from modules.INA219 import INA219
-
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
@@ -43,6 +37,12 @@ stuff = {
     "button_3": False,
 }
 
+ups_data = {
+        "voltage": 0.0,
+        "capacity": 0.0,
+        "current": 0.0
+    }
+
 @mqtt.on_connect()
 def handle_connect(client, userdata, flags, rc):
     mqtt.subscribe('stopwatch/#')
@@ -50,6 +50,7 @@ def handle_connect(client, userdata, flags, rc):
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
     global stuff
+    global ups_data
     data = dict(
         topic=message.topic,
         payload=message.payload.decode()
@@ -80,6 +81,8 @@ def handle_mqtt_message(client, userdata, message):
             stuff["armed"] = True
         else:
             stuff["armed"] = False
+    elif(data["topic"] == "stopwatch/ups"):
+        ups_data = json.loads(data['payload'])
 
 @app.route("/")
 def index():
@@ -114,28 +117,7 @@ def get_image():
 
 @app.route("/ups")
 def ups():
-    if(config["x750"]["enable"] == True):
-        voltage = "{:10.2f}".format(float(x750.getVolage()))
-        capacity = "{:0.0f}".format(float(x750.getCapacity()))
-        current = 0
-    elif(config["INA819"]["enable"] == True):
-        ups = INA219(addr=0x42)
-        ups_data = ups.getData()
-        voltage = "{:10.2f}".format(float(ups_data["voltage"]))
-        capacity = "{:0.0f}".format(float(ups_data["percent"]))
-        current = "{:10.2f}".format(float(ups_data["current"]))
-    else:
-        voltage = 0
-        capacity = 0
-        current = 0
-
-    data = {
-        "voltage": voltage,
-        "capacity": capacity,
-        "current": current
-    }
-    return json.dumps(data)
-
+    return  json.dumps(ups_data)
 
 @app.route("/get_ip")
 def get_ip():
