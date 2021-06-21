@@ -9,11 +9,11 @@ with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
 if (config["x750"]["enable"] == True):
-    from flask_backend.modules import x750ups as x750
+    from modules import x750ups as x750
 
 elif (config["INA819"]["enable"] == True):
-    from flask_backend.modules.INA219 import INA219
-    ups = INA219(addr=0x42)
+    from modules.INA219 import INA219
+
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
@@ -119,6 +119,7 @@ def ups():
         capacity = "{:0.0f}".format(float(x750.getCapacity()))
         current = 0
     elif(config["INA819"]["enable"] == True):
+        ups = INA219(addr=0x42)
         ups_data = ups.getData()
         voltage = "{:10.2f}".format(float(ups_data["voltage"]))
         capacity = "{:0.0f}".format(float(ups_data["percent"]))
