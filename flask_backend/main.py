@@ -92,6 +92,10 @@ def index():
 def settings():
     return render_template("settings.html")
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
 @app.route("/webInput/<data1>")
 def webInput(data1):
     if (data1 == "arm"):
