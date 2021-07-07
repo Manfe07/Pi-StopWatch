@@ -16,29 +16,15 @@
 	<div class="setting_div">
 		<form style="padding: 5pt">
   			<label>Rennen Nr.:
-				<select name="race_nr_field">
-					<option>FC01</option>
-					<option>FC02</option>
+				<select id="race_nr_field" name="race_nr_field" onchange="get_Teams()">
+					<option>Rennen 1</option>
+					<option>Rennen 2</option>
+					<option>Rennen 3</option>
 				</select>
 			</label><br>
-			<label><a>Team 1 :</a>
-				<select name="team_1_field" size="1">
-					<option>FC01</option>
-					<option>FC02</option>
-				</select>
-			</label><br>
-			<label><a>Team 2 :</a>
-				<select name="team_2_field" size="1">
-					<option>FC01</option>
-					<option>FC02</option>
-				</select>
-			</label><br>
-			<label><a>Team 3 :</a>
-				<select name="team_3_field" size="1">
-					<option>FC01</option>
-					<option>FC02</option>
-				</select>
-			</label><br><br>
+			<label><a>Team 1 : </a><a id="team_1" class="team_name">Team A</a></label><br>
+			<label><a>Team 2 : </a><a id="team_2" class="team_name">Team B</a></label><br>
+			<label><a>Team 3 : </a><a id="team_3" class="team_name">Team C</a></label><br><br>
 			<a>Zeit 1: </a><input id="time_1_field" type="number" class="time_input" step="0.01" min="0" placeholder="Zeit Bahn 1"><br>
 			<a>Zeit 2: </a><input id="time_2_field" type="number" class="time_input" step="0.01" min="0" placeholder="Zeit Bahn 2"><br>
 			<a>Zeit 3: </a><input id="time_3_field" type="number" class="time_input" step="0.01" min="0" placeholder="Zeit Bahn 3"><br>
@@ -47,7 +33,7 @@
 		
 		<div style="padding: 5pt">
 			<button onClick="save_settings()">Save</button>
-			<button onClick="load_settings()">Load</button>
+			<button onClick="get_Races()">Load</button>
 		</div>
 		<img id="finish_picture" src="../static/img/camera.png" width="50%"></img>
 	</div>
@@ -93,8 +79,38 @@
 			return 0
 		}
 	
+		function get_Races(){
+			$.getJSON('/get_races', function(data) {
+				race_select = document.getElementById("race_nr_field")
+				race_select.options
+				for (var i in data) {
+					race_select.options[i] = new Option(data[i]["race"])
+				}
+				});
+			return 0
+		}
+	
+		function get_Teams(){
+			opt = document.getElementById("race_nr_field").selectedIndex;
+			race = document.getElementById("race_nr_field").options[opt].text;
+			if(race != ""){
+				$.getJSON('/get_races', function(data) {
+					for (var i in data) {
+						if(race == (data[i]["race"])){
+							document.getElementById("team_1").innerHTML = data[i]["team_1"];
+							document.getElementById("team_2").innerHTML = data[i]["team_2"];
+							document.getElementById("team_3").innerHTML = data[i]["team_3"];
+							break;
+						}
+					}
+				});
+			}
+		return 0			
+		}
+	
 		get_IP();
 		get_Battery();
+		get_Races();
 		get_image();
 		setInterval(get_Battery, 5000);		
 		setInterval(get_image, 5000);

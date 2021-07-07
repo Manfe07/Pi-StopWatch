@@ -66,6 +66,9 @@
 .time_input{
     text-align: right;
     max-width: 70pt;
-
+}
+.team_name{
+    font-weight: bold;
+	
 	
 }
