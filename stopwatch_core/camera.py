@@ -9,13 +9,7 @@ class Camera:
 
     def __init__(self, device_id = 0):
         self.__camera_id = device_id
-        if self.check_openCV() and self.testDevice():
-            print('Camera (' + str(self.__camera_id) + ') check passed')
-            self.__camera_enabled = True
-        else:
-            print('Camera (' + str(self.__camera_id) + ') check failled')
-            self.__camera_enabled = False
-
+        self.__camera_enabled = self.check()
         if self.__camera_enabled:
             self.cap = cv.VideoCapture(self.__camera_id)  # video capture source camera (Here webcam of laptop)
 
@@ -36,15 +30,26 @@ class Camera:
             print('opencv not found')
             return False
 
+    def check(self):
+        if self.check_openCV() and self.testDevice():
+            print('Camera (' + str(self.__camera_id) + ') check passed')
+            return True
+        else:
+            print('Camera (' + str(self.__camera_id) + ') check failled')
+            return False
+
     def cameraEnabled(self):
         return self.__camera_enabled
 
     def takePicture(self):
         if self.__camera_enabled:
-            ret, frame = self.cap.read()  # return a single frame in variable `frame`
-            cv.imwrite('test.jpg', frame)
-            cv.destroyAllWindows()
-
+            try:
+                ret, frame = self.cap.read()  # return a single frame in variable `frame`
+                cv.imwrite('test.jpg', frame)
+                cv.destroyAllWindows()
+            except Exception as e:
+                print(e)
+                self.check()
     def stopCamera(self):
         if self.__camera_enabled:
             self.cap.release()
