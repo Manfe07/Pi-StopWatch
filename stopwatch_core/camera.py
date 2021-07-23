@@ -3,7 +3,7 @@ import importlib.util
 import sys
 
 # For illustrative purposes.
-class camera:
+class Camera:
     __camera_id = 0
     __camera_enabled = False
 
@@ -53,7 +53,7 @@ class camera:
         success, frame = self.cap.read()
 
 if __name__ == "__main__":
-    cam = camera(0)
+    cam = Camera(0)
     print("CHEEEEES")
     cam.takePicture()
     cam.stopCamera()

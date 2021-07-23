@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 import stopwatch
 import schedule
 import time
-import camera
+from camera import Camera
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
@@ -82,7 +82,7 @@ schedule.every(5).seconds.do(post_UPS)
 
 if __name__ == '__main__':
     schedule.run_all()
-    cam = camera(0)
+    cam = Camera(0)
     while(1):
         schedule.run_pending()
         time.sleep(.01)
