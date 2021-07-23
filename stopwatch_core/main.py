@@ -85,6 +85,7 @@ def checkCam():
         cam.check()
 
 schedule.every(5).seconds.do(post_UPS)
+schedule.every(10).seconds.do(checkCam)
 
 if __name__ == '__main__':
     schedule.run_all()
