@@ -49,7 +49,7 @@ class camera:
         if self.__camera_enabled:
             self.cap.release()
 
-    def cameraIdle(self):
+    def idle(self):
         success, frame = self.cap.read()
 
 if __name__ == "__main__":

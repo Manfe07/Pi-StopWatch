@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import stopwatch
 import schedule
 import time
+import camera
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
@@ -81,6 +82,7 @@ schedule.every(5).seconds.do(post_UPS)
 
 if __name__ == '__main__':
     schedule.run_all()
+    cam = camera(0)
     while(1):
         schedule.run_pending()
         time.sleep(.01)
@@ -115,8 +117,12 @@ if __name__ == '__main__':
                         client.publish("stopwatch/time_3", str(stopwatch.lane_3.get_duration().total_seconds()), retain=True)
 
                     if(stopwatch.check_Finish() == True):
+                        if cam.cameraEnabled:
+                            cam.takePicture()
                         arm(False)
                         time.sleep(0.5)
                 client.publish("stopwatch/running", str(stopwatch.running),retain=True)
         if(stopwatch.running):
+            if cam.cameraEnabled():
+                cam.idle()
             client.publish("stopwatch/runtime", stopwatch.get_runtime().total_seconds(),retain=True)
