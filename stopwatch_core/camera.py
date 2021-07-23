@@ -33,11 +33,11 @@ class Camera:
     def check(self):
         if self.check_openCV() and self.testDevice():
             print('Camera (' + str(self.__camera_id) + ') check passed')
-            self.__camera_enabled == True
+            self.__camera_enabled = True
             return True
         else:
             print('Camera (' + str(self.__camera_id) + ') check failled')
-            self.__camera_enabled == False
+            self.__camera_enabled = False
             return False
 
     def cameraEnabled(self):

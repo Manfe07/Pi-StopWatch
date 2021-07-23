@@ -81,7 +81,7 @@ def post_UPS():
     client.publish("stopwatch/ups", json.dumps(data), retain=True)
 
 def checkCam():
-    if (stopwatch.running == False and not cam.cameraEnabled()):
+    if (stopwatch.running == False and cam.cameraEnabled() == False):
         cam.check()
 
 schedule.every(5).seconds.do(post_UPS)
