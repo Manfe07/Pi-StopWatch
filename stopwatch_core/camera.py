@@ -49,14 +49,19 @@ class Camera:
                 cv.destroyAllWindows()
             except Exception as e:
                 print(e)
-                self.check()
+                self.__camera_enabled = self.check()
+
     def stopCamera(self):
         if self.__camera_enabled:
             self.cap.release()
 
     def idle(self):
-        success, frame = self.cap.read()
-
+        try:
+            success, frame = self.cap.read()
+        except Exception as e:
+            print (e)
+            self.__camera_enabled = self.check()
+            
 if __name__ == "__main__":
     cam = Camera(0)
     print("CHEEEEES")
