@@ -31,6 +31,9 @@ def on_message(client, userdata, msg):
         else:
             arm(False)
 
+
+cam = Camera(0)
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
@@ -77,12 +80,14 @@ def post_UPS():
     }
     client.publish("stopwatch/ups", json.dumps(data), retain=True)
 
+def checkCam():
+    if (stopwatch.running == False and not cam.cameraEnabled()):
+        cam.check()
 
 schedule.every(5).seconds.do(post_UPS)
 
 if __name__ == '__main__':
     schedule.run_all()
-    cam = Camera(0)
     while(1):
         schedule.run_pending()
         time.sleep(.01)

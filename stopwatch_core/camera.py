@@ -9,7 +9,7 @@ class Camera:
 
     def __init__(self, device_id = 0):
         self.__camera_id = device_id
-        self.__camera_enabled = self.check()
+        self.check()
         if self.__camera_enabled:
             self.cap = cv.VideoCapture(self.__camera_id)  # video capture source camera (Here webcam of laptop)
 
@@ -33,9 +33,11 @@ class Camera:
     def check(self):
         if self.check_openCV() and self.testDevice():
             print('Camera (' + str(self.__camera_id) + ') check passed')
+            self.__camera_enabled == True
             return True
         else:
             print('Camera (' + str(self.__camera_id) + ') check failled')
+            self.__camera_enabled == False
             return False
 
     def cameraEnabled(self):
@@ -61,7 +63,7 @@ class Camera:
         except Exception as e:
             print (e)
             self.__camera_enabled = self.check()
-            
+
 if __name__ == "__main__":
     cam = Camera(0)
     print("CHEEEEES")
