@@ -23,9 +23,9 @@ def on_connect(client, userdata, flags, rc):
 #    subscribe.callback(on_message_print, "stopwatch/webInput/#", hostname="localhost")
 
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print(msg.topic+" "+str(msg.payload.decode('UTF-8')))
     if(msg.topic == "stopwatch/webInput/armed"):
-        if(msg.payload == "true"):
+        if(msg.payload.decode('UTF-8') == "true"):
             arm(True)
         else:
             arm(False)

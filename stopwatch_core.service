@@ -1,0 +1,12 @@
+[Unit]
+Description = Stopwatch Core
+After = multi-user.target
+
+[Service]
+#Type=simple
+Restart = always
+WorkingDirectory = /opt/Pi-StopWatch/stopwatch_core/
+ExecStart = /usr/bin/python3 /opt/Pi-StopWatch/stopwatch_core/main.py
+
+[Install]
+WantedBy = multi-user.target
