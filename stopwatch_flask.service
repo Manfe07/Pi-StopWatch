@@ -1,0 +1,12 @@
+[Unit]
+Description = Stopwatch Flask-Backend
+After = multi-user.target
+
+[Service]
+#Type=simple
+Restart = always
+WorkingDirectory = /opt/Pi-StopWatch/flask_backend/
+ExecStart = /usr/bin/python3 /opt/Pi-StopWatch/flask_backend/main.py
+
+[Install]
+WantedBy = multi-user.target
