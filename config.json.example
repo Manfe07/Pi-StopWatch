@@ -7,7 +7,7 @@
     "led_armed": 33
   },
   "mqtt": {
-    "host": "broker.hivemq.com",
+    "host": "localhost",
     "port": 1883
   },
   "x750": {
