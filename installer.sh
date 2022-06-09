@@ -12,7 +12,7 @@ fi
 
 cd Pi-StopWatch
 
-cp config.json.example config.json
+sudo cp config.json.example config.json
 
 pip install -r flask_backend/requirements.txt
 pip install -r stopwatch_core/requirements.txt
