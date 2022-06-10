@@ -14,7 +14,7 @@
     "enable": false
   },
   "INA819" : {
-    "enable" : true
+    "enable" : false
   }
 
 }
