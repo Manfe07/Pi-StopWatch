@@ -92,6 +92,10 @@ def index():
 def settings():
     return render_template("settings.html")
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
 @app.route("/webInput/<data1>")
 def webInput(data1):
     if (data1 == "arm"):
@@ -127,6 +131,36 @@ def get_ip():
     #ip = commands.getoutput('hostname -I')
     data = {"ip": str(ip)}
     return json.dumps(data)
+
+@app.route("/get_races")
+def get_races():
+    races = [
+        {
+            "race": "F01",
+            "team_1": "Versenker",
+            "team_2": "Barrel Pilots",
+            "team_3": "Panzerknacker"
+        },
+        {
+            "race": "F02",
+            "team_1": "Steinzeit",
+            "team_2": "Bruch Piloten",
+            "team_3": "Ems Warane"
+        },
+        {
+            "race": "S01",
+            "team_1": "Norhorn",
+            "team_2": "Meppen",
+            "team_3": "Lingen"
+        },
+        {
+            "race": "S02",
+            "team_1": "LRG",
+            "team_2": "ESV",
+            "team_3": "GTRV"
+        },
+    ]
+    return json.dumps(races)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=1337, debug=True)

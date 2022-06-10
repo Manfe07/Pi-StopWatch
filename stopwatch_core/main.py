@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import stopwatch
 import schedule
 import time
+from camera import Camera
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
@@ -30,6 +31,9 @@ def on_message(client, userdata, msg):
         else:
             arm(False)
 
+
+cam = Camera(0)
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
@@ -41,6 +45,15 @@ client.loop_start()
 stopwatch = stopwatch.Stopwatch()
 
 old_input = stopwatch.get_input()
+
+first = True
+
+def doIfFirst():
+    global first
+    if first:
+        first = False
+        if cam.cameraEnabled:
+            cam.takePicture()
 
 def arm(_state):
     if _state == True:
@@ -76,8 +89,12 @@ def post_UPS():
     }
     client.publish("stopwatch/ups", json.dumps(data), retain=True)
 
+def checkCam():
+    if (stopwatch.running == False and cam.cameraEnabled() == False):
+        cam.check()
 
 schedule.every(5).seconds.do(post_UPS)
+schedule.every(10).seconds.do(checkCam)
 
 if __name__ == '__main__':
     schedule.run_all()
@@ -106,17 +123,23 @@ if __name__ == '__main__':
                 else:
                     if(input["Button_1"] == True):
                         stopwatch.lane_1.stop()
+                        doIfFirst()
                         client.publish("stopwatch/time_1", str(stopwatch.lane_1.get_duration().total_seconds()), retain=True)
                     if(input["Button_2"] == True):
                         stopwatch.lane_2.stop()
+                        doIfFirst()
                         client.publish("stopwatch/time_2", str(stopwatch.lane_2.get_duration().total_seconds()), retain=True)
                     if(input["Button_3"] == True):
                         stopwatch.lane_3.stop()
+                        doIfFirst()
                         client.publish("stopwatch/time_3", str(stopwatch.lane_3.get_duration().total_seconds()), retain=True)
 
                     if(stopwatch.check_Finish() == True):
                         arm(False)
+                        first = True #Reset first to True for the next Finisher
                         time.sleep(0.5)
                 client.publish("stopwatch/running", str(stopwatch.running),retain=True)
         if(stopwatch.running):
+            if cam.cameraEnabled():
+                cam.idle()
             client.publish("stopwatch/runtime", stopwatch.get_runtime().total_seconds(),retain=True)
