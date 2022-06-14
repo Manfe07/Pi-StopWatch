@@ -13,36 +13,28 @@
 		<audio id="horn_start" preload="auto"><source src="../static/sounds/horn_aoe.mp3" /></audio>
 	</head>
     <body id="mainpage">
-		<h1 id="headline" align="center">Stopwatch</h1>
-		<div class="container" align="center" id="timetable_container">
+		<h1 id="headline" align="center">Stopwatch - History</h1>
+		<div class="container" align="center" id="timetable_container" style="border: none;">
+			<button onClick="window.location.reload();">aktualisieren</button><br>
+			<input type="button" onclick="window.location.href = '/';" value="Hauptseite"/>
 			<p>
-				<img src="../static/img/raceflags.png" width="20%"><br>
-				Startzeit: <a id="start_time">00:00:00:00:00</a><br>
-				Bahn_1: <a class="mono_space" id="lane_1">000.00</a><br>
-				Bahn_2: <a class="mono_space" id="lane_2">000.00</a><br>
-				Bahn_3: <a class="mono_space" id="lane_3">000.00</a><br>
+				<table>
+					<th>Bahn 1</th>
+					<th>Bahn 2</th>
+					<th>Bahn 3</th>
+					<th>Timestamp</th>
+					{% for race in history %}
+						<tr>
+							<td style="text-align: right;">{{'%0.2f' % race["lane_1"]|float}}</td>
+							<td style="text-align: right;">{{'%0.2f' % race["lane_2"]|float}}</td>
+							<td style="text-align: right;">{{'%0.2f' % race["lane_3"]|float}}</td>
+							<td style="text-align: left;">{{race["timestamp"]}}</td>
+						</tr>
+					{% endfor %}
+				</table>
 			</p>
 		</div>	
-		<div class="container" align="center" id="runtime_container">
-			<img id="run_gif" src="../static/img/0.gif" height="30%"><br>
-			<a class="runtime" id="runtime_time">000.00</a><br>
-				<button class="button_indicator" id="lane_1_finish">Lane 1</button>
-				<button class="button_indicator" id="lane_2_finish">Lane 2</button>
-				<button class="button_indicator" id="lane_3_finish">Lane 3</button>
-		</div>
-		<div class="container" id="misc_container" align="center">
-			<p>
-				<button class="button_indicator" id="button_armed" onclick="change_arm()">disarmed</button>
-			</p>
-			<p>IP: <a id="ip_adress">000.000.000.000</a> &nbsp;&nbsp;&nbsp;&nbsp;
-				Battery: <a id="battery_capacity">000</a>%  &nbsp;&nbsp;&nbsp;&nbsp; 
-				<a id="button_settings"  href="settings"><img src="../static/svg/settings.svg" class="button_svg"></a> &nbsp;&nbsp;&nbsp;&nbsp;
-				<a id ="button_camera" href="get_image"><img src="../static/svg/camera.svg" class="button_svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id ="button_camera" href="history"><img src="../static/svg/history.svg" class="button_svg"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<img id ="button_mute" src="../static/svg/speaker.svg" class="button_svg">
-			</p>
-		</div>
-		</body>
+	</body>
 	
 	<script>
 		sound = true;

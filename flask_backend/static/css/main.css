@@ -68,7 +68,17 @@
     max-width: 70pt;
 }
 .team_name{
-    font-weight: bold;
-	
-	
+    font-weight: bold;	
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-of-type(odd) {
+    background-color:#ccc;
+}
+tr:nth-of-type(even) {
+    background-color:rgb(255, 255, 255);
 }
