@@ -135,8 +135,14 @@ if __name__ == '__main__':
                         client.publish("stopwatch/time_3", str(stopwatch.lane_3.get_duration().total_seconds()), retain=True)
 
                     if(stopwatch.check_Finish() == True):
+                        data = {
+                            "lane_1" : stopwatch.lane_1,
+                            "lane_2" : stopwatch.lane_2,
+                            "lane_3" : stopwatch.lane_3
+                        }
                         arm(False)
                         first = True #Reset first to True for the next Finisher
+                        client.publish("stopwatch/results", json.dumps(data), retain=True)
                         time.sleep(0.5)
                 client.publish("stopwatch/running", str(stopwatch.running),retain=True)
         if(stopwatch.running):

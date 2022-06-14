@@ -63,27 +63,39 @@ def handle_mqtt_message(client, userdata, message):
             stuff["running"] = True
         else:
             stuff["running"] = False
+            
     elif(data["topic"] == "stopwatch/runtime"):
         stuff["runtime"] = "{:10.2f}".format(float(data['payload']))
         print(data['payload'])
+        
     elif(data["topic"] == "stopwatch/start_time"):
         stuff["start_time"] = data["payload"]
+        
     elif(data["topic"] == "stopwatch/time_1"):
         stuff["time_1"] = "{:10.2f}".format(float(data['payload']))
+        
     elif(data["topic"] == "stopwatch/time_2"):
         stuff["time_2"] = "{:10.2f}".format(float(data['payload']))
+        
     elif(data["topic"] == "stopwatch/time_3"):
         stuff["time_3"] = "{:10.2f}".format(float(data['payload']))
+        
     elif(data["topic"] == "stopwatch/button"):
         buttons = json.loads(data['payload'])
         stuff["button_1"] = bool(buttons["Button_1"])
         stuff["button_2"] = bool(buttons["Button_2"])
         stuff["button_3"] = bool(buttons["Button_3"])
+        
+    elif(data["topic"] == "stopwatch/results"):
+        data = json.loads(data["payload"])
+        history.add_times(data["lane_1"], data["lane_2"], data["lane_3"])
+        
     elif(data["topic"] == "stopwatch/armed"):
         if(data["payload"] == "true"):
             stuff["armed"] = True
         else:
             stuff["armed"] = False
+            
     elif(data["topic"] == "stopwatch/ups"):
         ups_data = json.loads(data['payload'])
 
