@@ -2,12 +2,15 @@ import os
 #import commands
 import json
 
+import history
+
 from flask_mqtt import Mqtt
 from flask import Flask, render_template, send_file
 
 with open("../config.json") as json_data_file:
     config = json.load(json_data_file)
 
+history.init()
 
 mqttHost = config["mqtt"]["host"]
 mqttPort = config["mqtt"]["port"]
@@ -95,6 +98,11 @@ def settings():
 @app.route("/admin")
 def admin():
     return render_template("admin.html")
+
+@app.route("/history")
+def history_page():
+    
+    return render_template("history.html", history = history.get_times())
 
 @app.route("/webInput/<data1>")
 def webInput(data1):
